@@ -14,16 +14,18 @@ def resource_path(relative_path: str) -> str:
     try:
         base_path = sys._MEIPASS
     except Exception:
-        base_path - os.path.dirname(__file__)
+        base_path = os.path.dirname(__file__)
     return os.path.join(base_path, relative_path)
 
 if __name__ == '__main__':
     config = ConfigParser()
     config.read(CONFIGURATION_FILE)
-    DRIVER_BROWSER = config.get('edgedriver', 'browser')
-    DRIVER_PATH = config.get('edgedriver', 'path')
+    DRIVER = config.get('driver', 'driver')
+    DRIVER_BROWSER = config.get(DRIVER, 'browser')
+    DRIVER_PATH = config.get(DRIVER, 'path')
     calendar_name = config.get('calendar', 'name')
     event_name = config.get('calendar', 'event_name')
+    event_location = config.get('calendar', 'location')
 
     with open(BRS_CREDENTIALS_FILE, 'r') as f:
         brs_credentials = json.load(f)
@@ -72,7 +74,7 @@ if __name__ == '__main__':
                 end_datetime=booking['end_datetime'],
                 summary=event_name,
                 description=booking['description'],
-                location='Killeen Golf Club, Painestown, Kill, Co. Kildare, Ireland',
+                location=event_location,
                 notifications=[{'method': 'popup', 'minutes': 1440}]
             )
 
